@@ -1,4 +1,4 @@
-# 2. [実践] SSL証明書の更新
+# 2. [実践] SSLの接続確認
 
 - [2-1. 概要](#a1)
 - [2-2. 準備](#a2)
@@ -223,11 +223,12 @@ Certificate chain
 # 最後に「Verify return code: 18 (self signed certificate)」が出力されるが、これは自己証明書の為。
 
 # openssl x509コマンドで出力項目を絞れる
+# 証明書には期限があるので、期限が来る前に都度更新が必要
 $ openssl s_client -connect localhost:443 -showcerts < /dev/null 2>/dev/null | openssl x509 -noout -issuer -subject -startdate -enddate
 issuer= /CN=ssltest
 subject= /CN=ssltest
-notBefore=Apr 16 23:40:50 2020 GMT
-notAfter=May 16 23:40:50 2020 GMT
+notBefore=Apr 16 23:40:50 2020 GMT # 開始
+notAfter=May 16 23:40:50 2020 GMT  # 終了
 ```
 - https://mazgi.github.io/posts/2016.02/tls-certificates-validation-via-s_client/
 - https://jp.globalsign.com/support/faq/07.html
@@ -324,4 +325,3 @@ https://qiita.com/sotoiwa/items/35f42d969210e0fcd62e#%E8%A8%BC%E6%98%8E%E6%9B%B8
 - 全般： https://qiita.com/jinnai73/items/638dcc1434d47b12e6ba
 - 全般： https://qiita.com/sotoiwa/items/35f42d969210e0fcd62e
 - 全般： https://qiita.com/t-kuni/items/d3d72f429273cf0ee31e
-
