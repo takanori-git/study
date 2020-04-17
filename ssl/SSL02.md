@@ -1,18 +1,21 @@
-# 2. [実践] SSL接続するための設定
+# 2. [実践] SSL証明書の更新
 
 - [2-1. 概要](#a1)
 - [2-2. 準備](#a2)
 - [2-3. SSL証明書の作成](#a3)
-- [2-4. OSに証明書を登録](#a4)
-- [2-5. 補足](#a5)
-- [2-6. 参考](#a6)
+- [2-4. コマンドで確認](#a4)
+- [2-5. OSに証明書を登録](#a5)
+- [2-6. ブラウザで確認](#a6)
+- [2-7. 補足](#a7)
+- [2-8. 参考](#a8)
+
 
 <span id="a1">
 
 ## 2-1. 概要
 
 CentOSでApacheサーバーを立ててSSL接続する方法を記載する。  
-※ お金と手間をかけずに実施するため、証明局に申請はせずに自己署名で確認してみた
+※ お金と手間をかけずに実施するため、サーバー自身の自己署名で確認してみた。
 
 <span id="a2">
 
@@ -138,6 +141,9 @@ Certificate Request:
     Data:
         Version: 0 (0x0)
         Subject: CN=ssltest # OK
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit) # OK
 ・・・
 ```
 ### C. サーバー証明書の作成
@@ -203,8 +209,35 @@ $ sudo systemctl restart httpd
 
 <span id="a4">
 
-## 2-4. OSに証明書を登録
+## 2-4. コマンドで確認
+```sh
+$ openssl s_client -connect localhost:443 -showcerts < /dev/null 2>/dev/null
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:/CN=ssltest
+   i:/CN=ssltest
+-----BEGIN CERTIFICATE-----
+・・・
+# ずらずら出力される。
+# 最後に「Verify return code: 18 (self signed certificate)」が出力されるが、これは自己証明書の為。
+
+# openssl x509コマンドで出力項目を絞れる
+$ openssl s_client -connect localhost:443 -showcerts < /dev/null 2>/dev/null | openssl x509 -noout -issuer -subject -startdate -enddate
+issuer= /CN=ssltest
+subject= /CN=ssltest
+notBefore=Apr 16 23:40:50 2020 GMT
+notAfter=May 16 23:40:50 2020 GMT
+```
+- https://mazgi.github.io/posts/2016.02/tls-certificates-validation-via-s_client/
+- https://jp.globalsign.com/support/faq/07.html
+
+<span id="a5">
+
+## 2-5. OSに証明書を登録
 今回作成したのは自己署名の証明書なので、OSに手動で登録する必要がある。
+
+※ なぜOSに登録するのかは、[1. [基礎] SSLの仕組み](SSL01.md)の「1-4.補足」「C. 証明書管理方法」を参照  
 ### A. 証明書のエクスポート
 以下の順にクリックしていく。
 - Chromeのアドレスバーの鍵マーク
@@ -229,7 +262,9 @@ $ sudo systemctl restart httpd
 - はい
 - **全**ブラウザ落とす // ★ 重要
 
-## 2-3. SSL接続確認
+<span id="a6">
+
+## 2-6. ブラウザで確認
 - ブラウザで https://testssl にアクセス  
 ![ssltest_ok.jpg](img/ssltest_ok.jpg)
 
@@ -252,9 +287,9 @@ $ sudo systemctl restart httpd
 
     </details>
 
-<span id="a5">
+<span id="a7">
 
-## 2-5. 補足
+## 2-7. 補足
 
 ### A. 覚えておきたい重要語句
 |区分|名前|備考|
@@ -279,8 +314,14 @@ https://jp.globalsign.com/service/ssl/products_price/wildcardssl.html
 - サブジェクト
 - サブジェクト代替名
 
-<span id="a6">
+<span id="a8">
 
-## 2-6. 参考
+### D. 証明局(CA)ありの場合のやりかた
+以下を参照。今回はやらない。  
+https://qiita.com/sotoiwa/items/35f42d969210e0fcd62e#%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%AE%E4%BD%9C%E6%88%90%E8%AA%8D%E8%A8%BC%E5%B1%80%E3%81%AB%E3%82%88%E3%82%8B%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%B8%E3%81%AE%E7%BD%B2%E5%90%8D
+
+## 2-8. 参考
 - 全般： https://qiita.com/jinnai73/items/638dcc1434d47b12e6ba
+- 全般： https://qiita.com/sotoiwa/items/35f42d969210e0fcd62e
 - 全般： https://qiita.com/t-kuni/items/d3d72f429273cf0ee31e
+
