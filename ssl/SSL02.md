@@ -232,6 +232,7 @@ notAfter=May 16 23:40:50 2020 GMT  # 終了
 ```
 - https://mazgi.github.io/posts/2016.02/tls-certificates-validation-via-s_client/
 - https://jp.globalsign.com/support/faq/07.html
+- https://laboradian.com/try-openssl-s_client-command/
 
 <span id="a5">
 
@@ -317,7 +318,7 @@ https://jp.globalsign.com/service/ssl/products_price/wildcardssl.html
 
 <span id="a8">
 
-### D. 証明局(CA)ありの場合のやりかた
+### D. 証明局(CA)あり（自己署名）の場合のやりかた
 以下を参照。今回はやらない。  
 https://qiita.com/sotoiwa/items/35f42d969210e0fcd62e#%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%AE%E4%BD%9C%E6%88%90%E8%AA%8D%E8%A8%BC%E5%B1%80%E3%81%AB%E3%82%88%E3%82%8B%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%B8%E3%81%AE%E7%BD%B2%E5%90%8D
 
