@@ -231,6 +231,7 @@ notAfter=May 16 23:40:50 2020 GMT
 ```
 - https://mazgi.github.io/posts/2016.02/tls-certificates-validation-via-s_client/
 - https://jp.globalsign.com/support/faq/07.html
+- https://laboradian.com/try-openssl-s_client-command/
 
 <span id="a5">
 
@@ -324,4 +325,3 @@ https://qiita.com/sotoiwa/items/35f42d969210e0fcd62e#%E8%A8%BC%E6%98%8E%E6%9B%B8
 - 全般： https://qiita.com/jinnai73/items/638dcc1434d47b12e6ba
 - 全般： https://qiita.com/sotoiwa/items/35f42d969210e0fcd62e
 - 全般： https://qiita.com/t-kuni/items/d3d72f429273cf0ee31e
-
