@@ -46,6 +46,7 @@ SSLを理解するにあたって大事なことは以下。
   - 一般的なのは3階層と4階層。  
   (4階層は間にクロスルート用中間CA証明書を挟む。こうすることで、新旧どちらのルートCA証明書でもサーバー証明書を証明できる)。  
   <img src="img/closs_kaisou02.gif" alt="階層" width="350px">  
+  
   https://www.cybertrust.ne.jp/sureserver/support/faq/tech_faq01.html
   - 例えば、Cybertrustは中間CA、セコムはルートCA。https://www.cybertrust.ne.jp/sureserver/support/download_ca.html
 - ルートCA証明書はOSにデフォルトでインストールされている。
