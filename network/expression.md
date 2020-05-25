@@ -135,16 +135,27 @@ OSI参照モデルは7階層に分かれており、ネットワークを理解�
 
 - ドメイン名に対応するIPアドレスを取得する際に使用するプロトコル。レイヤ7。
 - クライアントのスタブリゾルバは、/etc/resolve.confのnameserverに指定してあるフルサービスリゾルバに送信先ドメイン名のIPアドレスを問い合わせる（再帰的問い合わせ）。
-   - フルサービスリゾルバにキャッシュが残っていればそれを返して終了。
+   - スタブリゾルバはプロセスではなくOSで提供される関数orライブラリ。
+      Windowsではキャッシュ機能をもつ（Linuxではキャッシュ機能なし）
 - フルサービスリゾルバは、コンテンツサーバー群から該当のドメイン名を反復的に問い合わせてIPアドレスを取得する。（反復的問い合わせ） 
+   - フルサービスリゾルバにキャッシュが残っていればそれを返して終了。
    - IPアドレスのドメイン階層ごとに存在するコンテンツサーバー群をルートから遡って問い合わせる。
    ![画像](img/dns.gif)  
    https://image.itmedia.co.jp/ait/articles/0112/18/r3zu04.gif
 - 一連の処理はdigコマンドで確認できる。
 
 参考：
-   - DNSの全体像： https://www.atmarkit.co.jp/ait/articles/0112/18/news001.html
+   - DNSの全体像：
+      - https://www.atmarkit.co.jp/ait/articles/0112/18/news001.html
+      - https://www.atmarkit.co.jp/ait/articles/1706/23/news042.html
    - リゾルバとは： https://www.atmarkit.co.jp/fnetwork/dnstips/010.html
+   - スタブリゾルバ：https://www.atmarkit.co.jp/fnetwork/dnstips/010.html
+   - LinuxのDNSキャッシュはない：https://www.na3.jp/entry/20081013/p2
+   - 再帰問い合わせ：https://jprs.jp/glossary/index.php?ID=0173
+   - ドメイン設定 win linux：
+https://www.atmarkit.co.jp/ait/articles/0203/21/news002.html
+   - > Dnsmasqとは、小規模ネットワーク向けのDNS/DHCP/TFTPサーバーです。Dnsmasqは自身の/etc/hostsファイルを参照してDNSクエリに応答してくれるため、/etc/hostsにレコードを追加するだけで、お手軽に家庭内DNSコンテンツサーバー兼キャッシュサーバーとして利用することができます  
+   https://www.infiniteloop.co.jp/blog/2015/04/how_to_use_dnsmasq/
 
 #### D. ARP
 
