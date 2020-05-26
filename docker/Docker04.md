@@ -27,7 +27,7 @@ e5eb9478501f        none                null                local
 
 基本的に使うのはbridgeかoverlayだと思う。  
 それぞれの説明は以下を参照のこと
-- https://qiita.com/TsutomuNakamura/items/ed046ee21caca4a2ffd9 ★
+- https://qiita.com/TsutomuNakamura/items/ed046ee21caca4a2ffd9
 - http://docs.docker.jp/engine/userguide/networking/dockernetworks.html
 
 <span id="a2">
@@ -157,6 +157,8 @@ Ncat: Could not resolve hostname "Container_B": Name or service not known. QUITT
 
 #### B. ユーザー定義ネットワーク
 
+ドメイン名、コンテナ名で名前解決するには、ユーザー定義ネットワークに参加させる必要がある。
+
 ##### 疎通確認
 
 VM1
@@ -171,7 +173,7 @@ a7727a3774f9        host                host                local
 caa2881f8d36        none                null                local
 5def524adc0e        test-nw             bridge              local
 
-# コンテナに接続（コメント部分は、コンテナ新規作成時にネットワークにも接続させるコマンド）
+# コンテナに接続（コメントしたコマンドは、コンテナ新規作成時にネットワークにも接続させるコマンド）
 $ docker network connect testnw Container_A
 #$ docker container run -it --name Container_A --net testnw centos:centos7 /bin/sh
 
@@ -255,7 +257,7 @@ https://knowledge.sakura.ad.jp/4786/#
 
 #### C. Docker Composeによるネットワーク
 
-コンテナの立ち上げは、[Docker03.md](Docker03.md) の「4. DockerCompose」のB.C.を参照。
+コンテナの立ち上げは、[3-3. DockerCompose](Docker03.md#a3)のB.C.を参照。
 
 ※ ncやpingで疎通確認してもよいが、httpdが入っているのでcurlで疎通確認してみた。
 
@@ -396,12 +398,12 @@ Vagrant + VirtualBoxを使ってDocker環境を作成した場合のイメージ
     - https://www.itmedia.co.jp/enterprise/articles/1609/21/news001.html
     - https://qiita.com/osuo/items/16fd61c7479bd7ef041a
 - VirtualBox
-    - http://zorinos.seesaa.net/article/450304938.html ★
+    - http://zorinos.seesaa.net/article/450304938.html
     - https://qiita.com/satoki-shiro/items/9ba6a7b7118b9eab8b8e
     - https://qiita.com/tmiki/items/d786edf221feb4cb1af5
     - https://qiita.com/feifo/items/0fde474005589afcff68
 
-基本的に以下のコマンドで確認した。
+主に以下のコマンドで確認した。
 - ip a
 - ip r
 - bridge link
@@ -412,7 +414,7 @@ Vagrant + VirtualBoxを使ってDocker環境を作成した場合のイメージ
 
 
 ### B. NIC、ルーティングテーブルについて
-#### VM側
+#### VM側（ホスト側）
 Dockerをインストールすると、
 1) NICに`docker0`が追加される。
     ```sh
@@ -474,7 +476,7 @@ default via 172.17.0.1 dev eth0
 - traceroute
     ```sh
     # -I(icmp)なしだと結果が「*」だった。
-    $ sudo traceroute -I 8.8.8.8
+    $ sudo traceroute -I ＜ipアドレス＞
     ```
     参考：
     - > tracerouteコマンドはUDP（User Datagram Protocol）を使って経路をテストしますが、環境によっては途中にUDPが使用できないかもしれません。このようなときは、「-T」オプションでTCPを使用するか、「-I」オプションでpingコマンドと同じICMP（Internet Control Message Protocol）メッセージのエコー応答（ECHO）を使用します。

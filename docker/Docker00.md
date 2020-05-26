@@ -10,7 +10,3 @@ Dockerについてほとんど知見のない初心者が学んだことをま�
 - [4. Dockerネットワーク](Docker04.md)
     - [Appendix. NCコマンドあれこれ](Docker04-1.md)
 - [5. Dockerログ](Docker05.md)
-
----
-
-2020/05/25 更新

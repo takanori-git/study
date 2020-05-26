@@ -10,17 +10,16 @@
 <span id="a1">
 
 ## 2-1. 環境
-- Windows10 Home 1909
+- Windows10 Home 1909 // ホストOS
 - Oracle VM VirtualBox 6.0.12
 - Vagrant 2.2.5
-- CentOS7
+- CentOS7 // ゲストOS
 
-VirtualBox上に構築したCentOS7にDockerをインストールすることにする。  
-  - Windows上に立てるとなると、レガシー扱いのDocker Toolboxを使わないといけないし、Docker Machineの知識も必要になり面倒なため
+WindowsのVirtualBox上に構築したCentOS7にDockerをインストールすることにする。  
+  - Windows10 Homeなので、Windows上に立てるとなるとレガシー扱いのDocker Toolboxを使わないといけないし、Docker Machineの知識も必要になり面倒なため
 
-ドキュメントに沿って実施していく。
-
-参考：https://docs.docker.com/engine/install/centos/
+また、疎通確認のため使用するWSLをインストールしておくこと。
+- https://qiita.com/Aruneko/items/c79810b0b015bebf30bb
 
 <span id="a2">
 
@@ -61,6 +60,8 @@ CentOS Linux release 7.7.1908 (Core)
 <span id="a3">
 
 ## 2-3. Dockerのインストール
+以降は公式ドキュメントに沿ってセットアップしていく。
+
 ```sh
 # パッケージマネージャ
 $ sudo yum install -y yum-utils
@@ -79,12 +80,10 @@ Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ・・・
 ```
-
+参考：https://docs.docker.com/engine/install/centos/
 <span id="a4">
 
 ## 2-4. ユーザーの編集
-参考：https://docs.docker.com/engine/install/linux-postinstall/
-
 sudoなしでdockerコマンドを使えるようにする。
 ```sh
 $ echo $USER
@@ -125,6 +124,7 @@ uid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant),992(docker) context=unc
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
+参考：https://docs.docker.com/engine/install/linux-postinstall/
 
 <span id="a5">
 

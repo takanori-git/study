@@ -4,7 +4,6 @@
 - [5-2. fluentd](#a2)
 - [5-3. 参考](#a3)
 
-
 Dockerのログ周りの設定を記載する。
 
 基礎知識
@@ -21,7 +20,7 @@ json-fileは名前の通りjson形式の文字列をログファイルに書き�
 
 この設定はデフォルトの設定で、コンテナを削除するとログも削除される。
 
-VM1
+VM
 ```sh
 # コンテナ起動
 $ docker run -d -p 80:80 --name test httpd
@@ -32,7 +31,7 @@ WSL
 # VMのIPアドレスにアクセス
 $ curl 192.168.33.11
 ```
-VM1
+VM
 ```sh
 # ログ確認（コマンド）
 $ docker logs test -f
@@ -51,7 +50,10 @@ $ sudo tail /var/lib/docker/containers/3c368c880b553c501d5bbc0ccf7e4ba412ea73fb0
 {"log":"192.168.33.1 - - [25/May/2020:05:36:50 +0000] \"GET / HTTP/1.1\" 200 45\n","stream":"stdout","time":"2020-05-25T05:36:50.173246061Z"}
 {"log":"192.168.33.1 - - [25/May/2020:05:36:50 +0000] \"GET / HTTP/1.1\" 200 45\n","stream":"stdout","time":"2020-05-25T05:36:50.397279225Z"}
 ```
+- ログファイル名は、コンテナIDで特定する。
+
 ### B. 複数コンテナ
+
 次は２つのコンテナを起動した場合を確認する。  
 また、ログ出力内容に付加情報を追加してみる。
 
@@ -71,7 +73,7 @@ $ curl 192.168.33.11:81
 $ curl 192.168.33.11
 ```
 
-VM1
+VM
 ```sh
 # ログ確認（コマンド）
 $ docker logs -f test1
@@ -103,13 +105,13 @@ $ sudo su
 
 ### 5-2-1. 同一ホストの例
 
-fluentdのコンテナを起動し、他のコンテナのログをfluentdコンテナにログを転送することでログを1つのファイルに集約できる。
+fluentdのコンテナを起動し、アプリケーションのコンテナのログをfluentdコンテナにログを転送することで、ログを1つのファイルに集約できる。
 
-コンテナを削除してもホストマシンにログが残る。
+この場合、コンテナを削除してもホストマシンにログが残る。
 
  ![docker-fluentd.jpg](img/docker-fluentd.jpg)
 
-VM1
+VM
 ```sh
 # fluentdコンテナ起動
 # VMの「/var/fluentd」に出力する
@@ -121,6 +123,9 @@ $ docker run -d -p 80:80 --name test1 --log-driver=fluentd --log-opt fluentd-add
 # アプリ用コンテナを起動（２つ目）
 $ docker run -d -p 81:80 --name test2 --log-driver=fluentd --log-opt fluentd-address=192.168.33.11:24224 --log-opt tag="docker.{{.Name}}" httpd
 ```
+- `log`,`log-opt`オプションでfluentdコンテナで処理することを指定。
+- `tag`オプションで出力ログにタグ内容を付与できる。今回の例では固定文字「docker」にコンテナ名(.Name)を付与。
+
 WSL
 ```sh
 $ curl 192.168.33.11:80
@@ -128,7 +133,7 @@ $ curl 192.168.33.11:81
 $ curl 192.168.33.11:80
 ```
 
-VM1
+VM
 ```sh
 # ログ確認（コマンド）-> エラー。fluentdはdocker logsに対応していない模様。
 $ docker logs -f test1
@@ -218,7 +223,7 @@ lrwxrwxrwx. 1 vagrant vagrant    57 May 26 10:13 docker.log -> /fluentd/log/dock
 ※可用性を考慮すると、fluentdコンテナとアプリ用コンテナは別ホストで運用するのが望ましいと思われる
 
 前提：
-- [LB04.md](LB04.md)の`A.クラスタの作成`、`B.ネットワークの作成`を実施済み
+- [4-1. 負荷分散の確認](../load_dist/LB04.md#a1)の`A.クラスタの作成`、`B.ネットワークの作成`を実施済み
 - VM1,VM2を起動済み
 
 VM1
